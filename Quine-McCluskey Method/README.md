@@ -1,38 +1,47 @@
-## Full targets
+# Quine-McCluskey Method
+### Problem Description:
+Implement a two-level logic optimizer based on Quine-McCluskey method. The first step is to generate all prime implicants for the given function. The second step is to choose a minimum-cost cover and generate a sum-of-products expression of this function with minimum number of prime implicant (If there exist different solutions with the same minimum number of prime implicant, please choose the one which has minimum number of literals).
 
-These contain a resident compiler.
+### Input format: 
+You should allow input from a file. <br> f(A,B,C,D) = Σ m(4,5,6,8,9,10,13) + Σ d(0,7,15). <br> 
 
-- C.  Generates a C file. 32 or 64 bits.
-- Intel x86.  32-bit only.  Linux and Windows.
-- Motorola 68000.  Linux and Atari TOS.
-- ARM.  Classic 32-bit instruction set.
-- PDP-11.  16-bit.  Unix V7.
-- RISC-V.  32-bit only.
-- asm.js.  Generates an asm.js file.  SpicerMonkey, V8, JavaScriptCore, IE11.
+The following is an example. 
+```linux
+.i  /* input variables */
+4   /* A,B,C,D. */
+.m  /* on set */
+4 5 6 8 9 10 13
+.d  /* don't care set */
+0 7 15
+```
 
-## Embedded targets
+### Output format:
+Generate all prime implicants and the minimum sum-of-products expression to a file. <br> Prime implicants and minimum sum-of-products expression are separated by a line, and they should be sorted according to the order {-, 0, 1}. If there are more than 15 primary implicants, report only the first 15 primary implicants. However, you still have to report the correct number of total primary implicants at “.p” field.
 
-Support for a Forth cross compiler is under way:
-http://github.com/larsbrinkhoff/xForth
+The following is an example.
+```linux
+.p 7 /* there are 7 prime implicants */
+-000 /* B'C'D' */
+-1-1 /* BD */
+0-00 /* A'C'D' */
+01-- /* A'B */
+1-01 /* AC'D */
+10-0 /* AB'D'*/
+100- /* AB'C' */
+.mc 3 /* 3 prime implicants in minimum covering */
+01-- /* A'B */
+1-01 /* AC'D */
+10-0 /* AB'D'*/
+literal=8
+```
 
-- 6502
-- 8051
-- AVR
-- Cortex-M, Thumb instruction set
-- Emacs bytecodes
-- MSP430
-- PDP-8
-- PIC, midrange devices
-- STM8
-
-## Research
-
-Some notes have been collected about these machines.
-
-- Batch file
-- 6809
-- PDP-1
-- PDP-4/7/9/15
-- PDP-10
-- Shell script
-- Xtensa
+### How to Compile
+```linux
+g++ -std=c++11 main.cpp -o main.exe
+```
+Generates executable binary file
+### How to Execute
+```linux
+./main.exe <input file> <output file> 
+```
+Generates output file
